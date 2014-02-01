@@ -25,6 +25,7 @@ class Maquina
   # Desecho que emite la maquina
   attr_reader :desecho
 
+  attr_reader :ciclos
 
   # Construye una instancia de la maquina
   #
@@ -34,11 +35,11 @@ class Maquina
   # * +cantidadMaxima+ - Cantidad maxima de producto que emite
   # * +Desecho+ - El porcentaje (eg 0.1) que la máquina desecha
   #
-  def initialize(nombre,cantidadMaxima,desecho)
+  def initialize(nombre,cantidadMaxima,desecho,cic)
     @nombre = nombre
     @cantidadMaxima= cantidadMaxima
     @desecho = desecho
-
+	@cicos = cic
 	#Describe el estado actual de la maquina
     @estado = "Inactiva"
   end
