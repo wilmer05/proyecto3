@@ -30,16 +30,13 @@ module SiloDeCebada
 
 	
 	#Imprime informacion relacionada con la maquina
-	def imprimir(cont,val)
+	def imprimir()
 		
 		puts "Maquina #{@nombre}"
-		if(val==0)
-			puts "Estado: inactiva"
-		else
-			puts "Estado: llena"
+		puts "Estado: #{@estado}"
+		if(@estado=="llena" or @estado=="inactiva")
+			puts "Cebada #{cont.cantidad}"		
 		end
-		puts "Cebada #{cont.cantidad}"		
-	
 	end
 	@cont = new Contenedor('Cebada',0)
 	# Produce cebada
@@ -49,7 +46,7 @@ module SiloDeCebada
 	# * +cantidadCebada+ - La cantidad de cebada. Se obtiene del main, y debe
 	# ser una variable del Main que se va modificando
 	#
-	def ciclo(cantidadCebada,binding)
+	def ciclo(cantidadCebada,binding,cambioEstado)
 		# Este metodo es dummy. Como la cantidad de ciclos de trabajo de esta
 		# maquina es 0, la maquina consume la entrada y emite la salida inme
 		# diatamente. En teoria, si una maquina tiene ciclos de trabajo positivos
@@ -61,25 +58,20 @@ module SiloDeCebada
 		# ciclo, se da cuenta que ya
 		# esta llena y ha recorrido un ciclo, asi que ahi SI retorna un contenedor
 		# con su producto.)
-		if(@cont.cantidad==0)
+
+		
+		if (@estado == "en espera" and cambioEstado==1) or @estado=="inactiva"
+			
 			if cantidadCebada >= @cantidadMaxima
-				eval "#{cantidadCebada}-=#{@cantidadMaxima}", bd
+				eval "#{cantidadCebada}-=#{@cantidadMaxima}", binding
 				@cont = new Contenedor('Cebada',@cantidadMaxima)
-				imprimir(cont,1)
+				@estado="llena"
 			else
 				@cont = new Contenedor('Cebada',cantidadCebada)
-				eval "#{cantidadCebada}=0", bd
-				imprimir(cont,0)
+				eval "#{cantidadCebada}=0", binding
+				@estado="inactiva"
 			end
 		end
-
-		if (@cont.cantidad==@cantidadMaxima)
-			imprimir(@cont,1)
-		else if(@cont.cantidad>0)
-			imprimir(@cont,0)
-		end
-
-		return @cont
 	end
 
 end
@@ -91,7 +83,7 @@ module TanqueCervezaFiltrada
 	def imprimir(cont,val)
 
 	end
-	@cont = new Contenedor('Cebada',0)
+	@cont = new Contenedor('Cerveza',0)
 	# Filtra la Cerveza
 	#
 	# ==== Atributos
@@ -99,6 +91,7 @@ module TanqueCervezaFiltrada
 	# * +cantidadPA+ - La cantidad del producto de la maquina anterior.
 	# Se obtiene del main, y debe ser una variable del Main que se va modificando
 	#
+
 	def ciclo(cantidadPA)
 		# Basicamente es el mismo procedimiento del ciclo anterior
 		# ya que es una maquina de 0 ciclos.
