@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>class Maquina - RDoc Documentation</title>
+<title>class Contenedor - RDoc Documentation</title>
 
 <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
 
@@ -60,7 +60,7 @@
     <nav id="file-list-section" class="section">
   <h3 class="section-header">Defined In</h3>
   <ul>
-    <li>Maquina.rb
+    <li>Contenedor.rb
   </ul>
 </nav>
 
@@ -111,17 +111,17 @@
 </nav>
 
 <div id="documentation">
-  <h1 class="class">class Maquina</h1>
+  <h1 class="class">class Contenedor</h1>
 
   <div id="description" class="description">
     
 <h2 id="label-Nombre">Nombre<span><a href="#label-Nombre">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
 
-<p>Máquina</p>
+<p><a href="Contenedor.html">Contenedor</a></p>
 
 <h2 id="label-Descripci%C3%B3n">Descripción<span><a href="#label-Descripci%C3%B3n">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
 
-<p>Clase que representa una maquina en la línea de produccion</p>
+<p>Clase que representa un contenedor con el producto que retorna una máquina</p>
 
 <h2 id="label-Autores">Autores<span><a href="#label-Autores">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
 
@@ -146,54 +146,28 @@ Fernandes ()</p>
       <h3 class="section-header">Attributes</h3>
 
       
-      <div id="attribute-i-cantidadMaxima" class="method-detail">
+      <div id="attribute-i-cantidad" class="method-detail">
         <div class="method-heading attribute-method-heading">
-          <span class="method-name">cantidadMaxima</span><span
+          <span class="method-name">cantidad</span><span
             class="attribute-access-type">[R]</span>
         </div>
 
         <div class="method-description">
         
-        <p>Cantidad Maxima de producto</p>
+        <p>Cantidad de producto</p>
         
         </div>
       </div>
       
-      <div id="attribute-i-desecho" class="method-detail">
+      <div id="attribute-i-nombreContenido" class="method-detail">
         <div class="method-heading attribute-method-heading">
-          <span class="method-name">desecho</span><span
+          <span class="method-name">nombreContenido</span><span
             class="attribute-access-type">[R]</span>
         </div>
 
         <div class="method-description">
         
-        <p>Desecho que emite la maquina</p>
-        
-        </div>
-      </div>
-      
-      <div id="attribute-i-estado" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">estado</span><span
-            class="attribute-access-type">[R]</span>
-        </div>
-
-        <div class="method-description">
-        
-        <p>Describe el estado actual de la maquina</p>
-        
-        </div>
-      </div>
-      
-      <div id="attribute-i-nombre" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">nombre</span><span
-            class="attribute-access-type">[RW]</span>
-        </div>
-
-        <div class="method-description">
-        
-        <p>Identificador de la maquina</p>
+        <p>Contenido del contenedor</p>
         
         </div>
       </div>
@@ -211,7 +185,7 @@ Fernandes ()</p>
         
         <div class="method-heading">
           <span class="method-name">new</span><span
-            class="method-args">(nombre,cantidadMaxima,desecho)</span>
+            class="method-args">(nombreContenido,cantidad)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -220,27 +194,23 @@ Fernandes ()</p>
 
         <div class="method-description">
           
-          <p>Construye una instancia de la maquina</p>
+          <p>Construye una instancia de un contenedor</p>
 
 <h4 id="method-c-new-label-Atributos">Atributos<span><a href="#method-c-new-label-Atributos">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
 <ul><li>
-<p><code>nombre</code> - El nombre que tendra la maquina</p>
+<p><code>nombreContenido</code> - Contenido del contenedor</p>
 </li><li>
-<p><code>cantidadMaxima</code> - Cantidad maxima de producto que emite</p>
-</li><li>
-<p><code>Desecho</code> - El porcentaje (eg 0.1) que la máquina desecha</p>
+<p><code>cantidad</code> - Cantidad en el contenedor</p>
 </li></ul>
           
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File Maquina.rb, line 40</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">nombre</span>,<span class="ruby-identifier">cantidadMaxima</span>,<span class="ruby-identifier">desecho</span>)
-  <span class="ruby-ivar">@nombre</span> = <span class="ruby-identifier">nombre</span>
-  <span class="ruby-ivar">@cantidadMaxima</span>= <span class="ruby-identifier">cantidadMaxima</span>
-  <span class="ruby-ivar">@desecho</span> = <span class="ruby-identifier">desecho</span>
-  <span class="ruby-ivar">@estado</span> = <span class="ruby-string">&quot;Inactiva&quot;</span>
+            <pre><span class="ruby-comment"># File Contenedor.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">nombreContenido</span>,<span class="ruby-identifier">cantidad</span>)
+  <span class="ruby-ivar">@nombreContenido</span> = <span class="ruby-identifier">nombreContenido</span>
+  <span class="ruby-ivar">@cantidad</span> = <span class="ruby-identifier">cantidad</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- new-source -->
           
