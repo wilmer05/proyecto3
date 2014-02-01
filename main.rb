@@ -45,7 +45,8 @@ def inicializar()
 end
 
 
-def ciclar(lista)
+def ciclar(listaMaq,lista)
+	
 	return [0,lista[1],lista[2],lista[2],lista[4]]
 end
 
@@ -55,8 +56,8 @@ if ARGV.length!=5
 	puts "El formato utilizado es ./main.rb <numero de ciclos> <cantidad cevada> <cantidad mezcla arroz/maiz> <cantidad de levadura> <cantidad de lupulo>"
 
 else 
-	cerveza,ins1,ins2,ins3,ins4 = ciclar(@lista)
 	@lista = inicializar()
+	cerveza,ins1,ins2,ins3,ins4 = ciclar(@lista,ARGV)
 	
 	puts ""
 	puts ""
