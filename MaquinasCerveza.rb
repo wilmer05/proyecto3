@@ -305,6 +305,7 @@ module PailaDeMezcla
 	#
 	# * +cantidadPA+ - La cantidad del producto de la maquina anterior.
 	# Se obtiene del main, y debe ser una variable del Main que se va modificando
+	# * +cantidadArroz+ - La cantidad del producto de Arroz y Maiz.Maiz
 	#
 
 	ciclo = CicloDeTrabajo.new
@@ -344,9 +345,98 @@ end
 
 
 module PailaDeCoccion
+	# Paila de Coccion
+	#
+	# ==== Atributos
+	#
+	# * +cantidadPA+ - La cantidad del producto de la maquina anterior.
+	# Se obtiene del main, y debe ser una variable del Main que se va modificando
+	# * +cantidadadLupulo+ - La cantidad de Lupulo que necesita la maquina.
 
+	ciclo = CicloDeTrabajo.new
+	cantidadProducto = 0
+
+  
+	def cicloCubaDeFiltracion(cantidadadLupulo , cantidadPA)
+		# la maquina PailaDeMezcla tiene dos ciclos, por lo que se tiene que modificar el
+		# status a llena una vez llegue a su cantidad Maxima de insumos, y luego a procesando
+		# Una vez este realizando el producto.		
+		if @estado == "Inactiva"
+			if (cantidadadLupulo + cantidadPA) >= @cantidadMaxima
+			     lupuloporc= ((@cantidadMaxima * 97.5) / 100)
+			     paPorc = ((@cantidadMaxima * 2.5) / 100)
+
+			     if((cantidadadLupulo>=lupuloporc)&&(cantidadPA>=paPorc))
+				cantidadadLupulo = cantidadadLupulo - lupuloporc
+				cantidadPA = cantidadPA - paPorc
+
+				cantidadProducto = @cantidadMaxima
+				@estado = "Llena"
+				ciclo.AumentarDeCiclo
+				end
+			else
+				cantidadProducto = cantidadeArrozMaiz+cantidadPA
+			end
+
+		elsif @estado == "Llena"
+			@estado = "Procesando"
+			ciclo.AumentarDeCiclo
+			desecho = ((@cantidadMaxima * 10) / 100)  #10%
+			cantidadProducto = @cantidadMaxima * (1- desecho)
+			return new Contenedor('Paila de coccion', cantidadProducto)
+		elsif @estado == "Procesando"
+			@estado = "Espera"
+			ciclo.AumentarDeCiclo
+		end	
+	end
 end
 
 module TCC
+	# TCC: Fermentación y Maduración
+	#
+	# ==== Atributos
+	#
+	# * +cantidadPA+ - La cantidad del producto de la maquina anterior.
+	# Se obtiene del main, y debe ser una variable del Main que se va modificando
+	#
 
+	ciclo = CicloDeTrabajo.new
+	cantidadProducto = 0
+
+	  
+	def cicloTCC(cantidaDeLevadura , cantidadPA)
+		# la maquina TCC tiene diez ciclos, por lo que se tiene que modificar el
+		# status a llena una vez llegue a su cantidad Maxima de insumos, y luego a procesando
+		# Una vez este realizando el producto.	
+		if @estado == "Inactiva"
+			if (cantidaDeLevadura + cantidadPA) >= @cantidadMaxima
+			    noventaYNuevePorc = ((@cantidadMaxima * 99) / 100)
+			    unoPorc = ((@cantidadMaxima * 1) / 100)
+
+			    if((cantidadeArrozMaiz>=cuarentaPorc)&&(cantidadPA>=sesentaPorc))
+				cantidaDeLevadura = cantidaDeLevadura - unoPorc
+				cantidadPA = cantidadPA - noventaYNuevePorc
+
+				cantidadProducto = @cantidadMaxima
+				@estado = "Llena"
+				ciclo.AumentarDeCiclo
+				end
+			else
+			cantidadProducto = cantidaDeLevadura + cantidadPA
+			end
+
+		elsif @estado == "Llena"
+			@estado = "Procesando"
+			ciclo.AumentarDeCiclo
+
+		elsif @estado == "Procesando"
+			if (ciclo.numeroCiclo < 10)
+				ciclo.AumentarDeCiclo
+			else
+				@estado = "Inactiva"
+				ciclo.numeroCiclo = 0
+				return new Contenedor('TCC', cantidadProducto)
+			end
+		end
+	end
 end
