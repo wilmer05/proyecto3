@@ -28,6 +28,20 @@ require_relative 'CicloDeTrabajo.rb'
 
 module SiloDeCebada
 
+	
+	#Imprime informacion relacionada con la maquina
+	def imprimir(cont,val)
+		
+		puts "Maquina #{@nombre}"
+		if(val==0)
+			puts "Estado: inactiva"
+		else
+			puts "Estado: llena"
+		end
+		puts "Cebada #{cont.cantidad}"		
+	
+	end
+	@cont = new Contenedor('Cebada',0)
 	# Produce cebada
 	#
 	# ==== Atributos
@@ -35,7 +49,7 @@ module SiloDeCebada
 	# * +cantidadCebada+ - La cantidad de cebada. Se obtiene del main, y debe
 	# ser una variable del Main que se va modificando
 	#
-	def producirCebada(cantidadCebada)
+	def ciclo(cantidadCebada,binding)
 		# Este metodo es dummy. Como la cantidad de ciclos de trabajo de esta
 		# maquina es 0, la maquina consume la entrada y emite la salida inme
 		# diatamente. En teoria, si una maquina tiene ciclos de trabajo positivos
@@ -47,15 +61,25 @@ module SiloDeCebada
 		# ciclo, se da cuenta que ya
 		# esta llena y ha recorrido un ciclo, asi que ahi SI retorna un contenedor
 		# con su producto.)
-		if cantidadCebada >= @cantidadMaxima
-			cantidadCebada = cantidadCebada - @cantidadMaxima
-			puts cantidadCebada
-			return new Contenedor('Cebada',@cantidadMaxima)
-		else
-			cont = new Contenedor('Cebada',cantidadCebada)
-			cantidadCebada = 0
-			return cont
+		if(@cont.cantidad==0)
+			if cantidadCebada >= @cantidadMaxima
+				eval "#{cantidadCebada}-=#{@cantidadMaxima}", bd
+				@cont = new Contenedor('Cebada',@cantidadMaxima)
+				imprimir(cont,1)
+			else
+				@cont = new Contenedor('Cebada',cantidadCebada)
+				eval "#{cantidadCebada}=0", bd
+				imprimir(cont,0)
+			end
 		end
+
+		if (@cont.cantidad==@cantidadMaxima)
+			imprimir(@cont,1)
+		else if(@cont.cantidad>0)
+			imprimir(@cont,0)
+		end
+
+		return @cont
 	end
 
 end
@@ -63,6 +87,11 @@ end
 
 
 module TanqueCervezaFiltrada
+
+	def imprimir(cont,val)
+
+	end
+	@cont = new Contenedor('Cebada',0)
 	# Filtra la Cerveza
 	#
 	# ==== Atributos
@@ -70,8 +99,8 @@ module TanqueCervezaFiltrada
 	# * +cantidadPA+ - La cantidad del producto de la maquina anterior.
 	# Se obtiene del main, y debe ser una variable del Main que se va modificando
 	#
-	def cervezafiltrada(cantidadPA)
-		# Basicamente es el mismo procedimiento de producirCebada
+	def ciclo(cantidadPA)
+		# Basicamente es el mismo procedimiento del ciclo anterior
 		# ya que es una maquina de 0 ciclos.
 	  
 		if cantidadPA >= @cantidadMaxima
