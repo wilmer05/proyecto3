@@ -26,19 +26,25 @@
 require_relative 'Contenedor.rb'
 require_relative 'CicloDeTrabajo.rb'
 
+def imprimir(obj)
+		
+		puts "Maquina #{obj.nombre}"
+		puts "Estado: #{obj.estado}"
+		if(obj.estado=="llena" or obj.estado=="inactiva")
+			cant = obj.cantidad
+			nom = obj.nombreContenido
+			nom.zip(cant).each do |name, cant|
+				puts "#{name}: #{cant}"
+			end
+		end
+	end
+
+
 module SiloDeCebada
 
 	
 	#Imprime informacion relacionada con la maquina
-	def imprimir()
-		
-		puts "Maquina #{@nombre}"
-		puts "Estado: #{@estado}"
-		if(@estado=="llena" or @estado=="inactiva")
-			puts "Cebada #{cont.cantidad}"		
-		end
-	end
-	@cont = new Contenedor('Cebada',0)
+	@cont = new Contenedor(['Cebada'],[0])
 	# Produce cebada
 	#
 	# ==== Atributos
@@ -46,7 +52,7 @@ module SiloDeCebada
 	# * +cantidadCebada+ - La cantidad de cebada. Se obtiene del main, y debe
 	# ser una variable del Main que se va modificando
 	#
-	def ciclo(cantidadCebada,binding,cambioEstado)
+	def ciclo(cantidadCebada,cambioEstado)
 		# Este metodo es dummy. Como la cantidad de ciclos de trabajo de esta
 		# maquina es 0, la maquina consume la entrada y emite la salida inme
 		# diatamente. En teoria, si una maquina tiene ciclos de trabajo positivos
@@ -58,10 +64,10 @@ module SiloDeCebada
 		# ciclo, se da cuenta que ya
 		# esta llena y ha recorrido un ciclo, asi que ahi SI retorna un contenedor
 		# con su producto.)
-		
+		val = 0 
 		if (@estado == "en espera" and cambioEstado==1)
 			if @cont.cantidad > 100
-				@cont = new Contenedor('Cebada',@cont.cantidad-100)
+				@cont = new Contenedor(['Cebada'],[@cont.cantidad[0]-100])
 			else
 				if(cantidadCebada>=400)
 					@estado="llena"
@@ -70,16 +76,16 @@ module SiloDeCebada
 				end
 				val = (cantidadCebada<400?cantidadCebada:400)
 
-				@cont = new Contenedor('Cebada',val)
-				eval "#{cantidadCebada}=(cantidadCebada<400?0:cantidadCebada-400)", binding
+				@cont = new Contenedor(['Cebada'],[val])
 			end
 		else if(@estado=="llena")
 			@estado="en espera"
-		else if(@estado=="inactiva" and@cont.cantidad+cantidadCebada>=400)
+		else if(@estado=="inactiva" and @cont.cantidad[0]+cantidadCebada>=400)
 			@estado="llena"
-			@cont = new Contenedor('Cebada',400)
-			eval "#{cantidadCebada}=(cantidadCebada<400?0:cantidadCebada-400)", binding
+			@cont = new Contenedor(['Cebada'],[400])
+			val = (cantidadCebada<400?0:cantidadCebada-400)
 		end
+		return val
 	end
 
 end
@@ -88,10 +94,7 @@ end
 
 module TanqueCervezaFiltrada
 
-	def imprimir(cont,val)
-
-	end
-	@cont = new Contenedor('Cerveza',0)
+	@cont = new Contenedor('PA',0)
 	# Filtra la Cerveza
 	#
 	# ==== Atributos
@@ -106,9 +109,9 @@ module TanqueCervezaFiltrada
 	  
 		if cantidadPA >= @cantidadMaxima
 			cantidadPA = cantidadPA - @cantidadMaxima
-			return new Contenedor('Cerveza Filtrada',@cantidadMaxima)
+			@cont = new Contenedor('Cerveza Filtrada',@cantidadMaxima)
 		else
-			cont = new Contenedor('Cerveza Filtrada',cantidadPA)
+			@cont = new Contenedor('Cerveza Filtrada',cantidadPA)
 			cantidadPA = 0
 			return cont
 		end
