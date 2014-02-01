@@ -58,19 +58,27 @@ module SiloDeCebada
 		# ciclo, se da cuenta que ya
 		# esta llena y ha recorrido un ciclo, asi que ahi SI retorna un contenedor
 		# con su producto.)
-
 		
-		if (@estado == "en espera" and cambioEstado==1) or @estado=="inactiva"
-			
-			if cantidadCebada >= @cantidadMaxima
-				eval "#{cantidadCebada}-=#{@cantidadMaxima}", binding
-				@cont = new Contenedor('Cebada',@cantidadMaxima)
-				@estado="llena"
+		if (@estado == "en espera" and cambioEstado==1)
+			if @cont.cantidad > 100
+				@cont = new Contenedor('Cebada',@cont.cantidad-100)
 			else
-				@cont = new Contenedor('Cebada',cantidadCebada)
-				eval "#{cantidadCebada}=0", binding
-				@estado="inactiva"
+				if(cantidadCebada>=400)
+					@estado="llena"
+				else
+					@estado = "inactiva"
+				end
+				val = (cantidadCebada<400?cantidadCebada:400)
+
+				@cont = new Contenedor('Cebada',val)
+				eval "#{cantidadCebada}=(cantidadCebada<400?0:cantidadCebada-400)", binding
 			end
+		else if(@estado=="llena")
+			@estado="en espera"
+		else if(@estado=="inactiva" and@cont.cantidad+cantidadCebada>=400)
+			@estado="llena"
+			@cont = new Contenedor('Cebada',400)
+			eval "#{cantidadCebada}=(cantidadCebada<400?0:cantidadCebada-400)", binding
 		end
 	end
 
