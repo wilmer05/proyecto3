@@ -28,7 +28,7 @@ class CicloDeTrabajo
   end
   
   def AumentarDeCiclo()
-    @numeroCiclo = @numeroCiclo+1
+    @numeroCiclo += 1
   end
  
   
