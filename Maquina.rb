@@ -19,9 +19,6 @@ class Maquina
   # Identificador de la maquina
   attr_accessor :nombre
 
-  # Describe el estado actual de la maquina
-  attr_reader :estado
-
   # Cantidad Maxima de producto
   attr_reader :cantidadMaxima
 
@@ -41,6 +38,8 @@ class Maquina
     @nombre = nombre
     @cantidadMaxima= cantidadMaxima
     @desecho = desecho
+
+	#Describe el estado actual de la maquina
     @estado = "Inactiva"
   end
 

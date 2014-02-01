@@ -311,32 +311,31 @@ module PailaDeMezcla
 	cantidadProducto = 0
 
   
-	def cicloCubaDeFiltracion(cantidadeArrozMaíz , cantidadPA)
+	def cicloCubaDeFiltracion(cantidadeArrozMaiz , cantidadPA)
 		# la maquina PailaDeMezcla tiene dos ciclos, por lo que se tiene que modificar el
 		# status a llena una vez llegue a su cantidad Maxima de insumos, y luego a procesando
 		# Una vez este realizando el producto.		
 		if @estado == "Inactiva"
-			if (cantidadeArrozMaíz + cantidadPA) >= @cantidadMaxima
+			if ((cantidadeArrozMaiz + cantidadPA) >= @cantidadMaxima)
 			     cuarentaPorc = ((@cantidadMaxima * 40) / 100)
 			     sesentaPorc = ((@cantidadMaxima * 50) / 100)
 			    
-			     if((cantidadeArrozMaíz>=cuarentaPorc)&&(cantidadPA>=sesentaPorc)
-				cantidadeArrozMaíz = cantidadeArrozMaíz - cuarentaPorc
-				cantidadPA = cantidadPA - sesentaPorc
-			       
-				cantidadProducto = @cantidadMaxima
-				@estado = "Llena"
-				ciclo.AumentarDeCiclo
+			     if((cantidadeArrozMaiz>=cuarentaPorc)&&(cantidadPA>=sesentaPorc))
+					cantidadeArrozMaiz = cantidadeArrozMaiz - cuarentaPorc
+					cantidadPA = cantidadPA - sesentaPorc
+				       
+					cantidadProducto = @cantidadMaxima
+					@estado = "Llena"
+					ciclo.AumentarDeCiclo
+				end
 			else
-				cantidadProducto = cantidadeArrozMaíz+cantidadPA
+				cantidadProducto = cantidadeArrozMaiz+cantidadPA
 			end
-			
+		
 		elsif @estado == "Llena"
 			@estado = "Procesando"
 			ciclo.AumentarDeCiclo
 			return new Contenedor('Paila de Mezcla', cantidadProducto)
-
 		end	
-			
 	end
 end
