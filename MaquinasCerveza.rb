@@ -35,6 +35,7 @@ module SiloDeCebada
 	# * +cantidadCebada+ - La cantidad de cebada. Se obtiene del main, y debe
 	# ser una variable del Main que se va modificando
 	#
+	@cont = new Contenedor('Cebada',0)
 	def producirCebada(cantidadCebada)
 		# Este metodo es dummy. Como la cantidad de ciclos de trabajo de esta
 		# maquina es 0, la maquina consume la entrada y emite la salida inme
@@ -47,14 +48,19 @@ module SiloDeCebada
 		# ciclo, se da cuenta que ya
 		# esta llena y ha recorrido un ciclo, asi que ahi SI retorna un contenedor
 		# con su producto.)
+		if(@cont.cantidad!=0) return [@cont,0]
+			
 		if cantidadCebada >= @cantidadMaxima
 			cantidadCebada = cantidadCebada - @cantidadMaxima
 			puts cantidadCebada
-			return new Contenedor('Cebada',@cantidadMaxima)
+			@cont = new Contenedor('Cebada',@cantidadMaxima),cantidadCebada
+			@estado = "Espera"
+			return [cont,cantidadCebada]
 		else
-			cont = new Contenedor('Cebada',cantidadCebada)
+			@cont = new Contenedor('Cebada',cantidadCebada)
 			cantidadCebada = 0
-			return cont
+			@estado = "Inactiva"
+			return [cont,0]
 		end
 	end
 
@@ -95,6 +101,7 @@ module Molino
 	# * +cantidadPA+ - La cantidad del producto de la maquina anterior.
 	# Se obtiene del main, y debe ser una variable del Main que se va modificando
 	#
+	@cont = new Contenedor('Molino',0)
 	def ciclomolino(cantidadPA)
 		# la maquina molino tiene un ciclo, por lo que se tiene que modificar el
 		# status a llena una vez llegue a su cantidad Maxima de insumos.
@@ -102,16 +109,26 @@ module Molino
 		ciclo = CicloDeTrabajo.new
 		desecho = ((@cantidadMaxima * 2) / 100)  #2%
 
+		if(@estado=="Procesando")
+			@estado = "Espera"
+			return cont, cantidadPa
+
+		if(@estado=="Llena") 
+			@estado="Procesando"
+			return cont,cantidadPA
+		end
+
 		if cantidadPA >= @cantidadMaxima
 			cantidadPA = cantidadPA - @cantidadMaxima
 			@estado = "Llena"
 			ciclo.AumentarDeCiclo
 
-			return new Contenedor('Molino',@cantidadMaxima)
+			@cont = new Contenedor('Molino',98)
+			return cont,cantidadPA
 		else
-			cont = new Contenedor('Molino',cantidadPA)
+			@cont = new Contenedor('Molino',cantidadPA)
 			cantidadPA = 0
-			return cont
+			return cont,0
 		end
 	end
 end
@@ -312,7 +329,7 @@ module PailaDeMezcla
 	cantidadProducto = 0
 
   
-	def cicloCubaDeFiltracion(cantidadeArrozMaiz , cantidadPA)
+	def ciclo(cantidadeArrozMaiz , cantidadPA)
 		# la maquina PailaDeMezcla tiene dos ciclos, por lo que se tiene que modificar el
 		# status a llena una vez llegue a su cantidad Maxima de insumos, y luego a procesando
 		# Una vez este realizando el producto.		
@@ -331,6 +348,8 @@ module PailaDeMezcla
 				end
 			else
 				cantidadProducto = cantidadeArrozMaiz+cantidadPA
+				cantidadArrozMaiz =0
+				cantidadPA=0
 			end
 
 		elsif @estado == "Llena"
@@ -357,7 +376,7 @@ module PailaDeCoccion
 	cantidadProducto = 0
 
   
-	def cicloCubaDeFiltracion(cantidadadLupulo , cantidadPA)
+	def cicloPailaDeMezcla(cantidadadLupulo , cantidadPA)
 		# la maquina PailaDeMezcla tiene dos ciclos, por lo que se tiene que modificar el
 		# status a llena una vez llegue a su cantidad Maxima de insumos, y luego a procesando
 		# Una vez este realizando el producto.		
@@ -385,7 +404,9 @@ module PailaDeCoccion
 			cantidadProducto = @cantidadMaxima * (1- desecho)
 			return new Contenedor('Paila de coccion', cantidadProducto)
 		elsif @estado == "Procesando"
-			@estado = "Espera"
+			if(ciclo.ciclos==ciclos)
+				@estado = "Espera"
+			end
 			ciclo.AumentarDeCiclo
 		end	
 	end

@@ -36,7 +36,7 @@ class Maquina
   def initialize(nombre,cantidadMaxima,cic)
     @nombre = nombre
     @cantidadMaxima= cantidadMaxima
-	@cicos = cic
+	@ciclos = cic
 	#Describe el estado actual de la maquina
     @estado = "Inactiva"
   end

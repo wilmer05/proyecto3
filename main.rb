@@ -45,9 +45,41 @@ def inicializar()
 end
 
 
-def ciclar(listaMaq,lista)
-	
-	return [0,lista[1],lista[2],lista[2],lista[4]]
+def ciclar(listaMaq,res)
+	ciclos = res[0].to_i
+	lista = [res[1].to_i]+[res[2].to_i]+[res[3].to_i]+[res[4].to_i]
+	cerveza = 0
+	tmp =1
+	entra = [0,0,0,0,0,0,0,0,0,0,0]	
+	while tmp<=ciclos do
+		maquinas =0
+		while maquinas<=10 do
+
+			if(maquinas==0)
+				cont,lista[1]=listaMaq[0].producirCebada(lista[1])
+				if listaMaq[0].estado == "Espera"
+					entra[1]=100
+				end
+		
+			else if maquinas==1
+				
+
+			end
+
+
+
+			
+			maquinas-=1
+
+		end
+
+
+		tmp+=1
+	end
+
+	puts ciclos
+
+	return [cerveza,lista[0],lista[1],lista[2],lista[3]]
 end
 
 if ARGV.length!=5
@@ -57,6 +89,8 @@ if ARGV.length!=5
 
 else 
 	@lista = inicializar()
+	lista2=[]
+
 	cerveza,ins1,ins2,ins3,ins4 = ciclar(@lista,ARGV)
 	
 	puts ""
