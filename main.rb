@@ -43,9 +43,12 @@ def inicializar()
 
 	return @maquinas
 end
-def algo(p,bd)
-	eval "#{p}=0", bd
+
+
+def ciclar(lista)
+	return [0,lista[1],lista[2],lista[2],lista[4]]
 end
+
 if ARGV.length!=5
 	puts "Cantidad de argumentos tiene que ser igual a 5"
 	puts "Usted dio #{ARGV.length} argumento(s)"

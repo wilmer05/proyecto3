@@ -66,7 +66,7 @@ module SiloDeCebada
 		# con su producto.)
 		val = 0 
 		if (@estado == "en espera" and cambioEstado==1)
-			if @cont.cantidad > 100
+			if @cont.cantidad[0] > 100
 				@cont = new Contenedor(['Cebada'],[@cont.cantidad[0]-100])
 			else
 				if(cantidadCebada>=400)
@@ -93,8 +93,6 @@ end
 
 
 module TanqueCervezaFiltrada
-
-	@cont = new Contenedor('PA',0)
 	# Filtra la Cerveza
 	#
 	# ==== Atributos
@@ -102,19 +100,35 @@ module TanqueCervezaFiltrada
 	# * +cantidadPA+ - La cantidad del producto de la maquina anterior.
 	# Se obtiene del main, y debe ser una variable del Main que se va modificando
 	#
+	@cont = Contenedor.new(['Cerveza Filtrada'],[0])
 
-	def ciclo(cantidadPA)
+	def ciclo(cantidadPA,cambioEstado)
 		# Basicamente es el mismo procedimiento del ciclo anterior
 		# ya que es una maquina de 0 ciclos.
 	  
-		if cantidadPA >= @cantidadMaxima
-			cantidadPA = cantidadPA - @cantidadMaxima
-			@cont = new Contenedor('Cerveza Filtrada',@cantidadMaxima)
-		else
-			@cont = new Contenedor('Cerveza Filtrada',cantidadPA)
-			cantidadPA = 0
-			return cont
+		val = 0 
+		if (@estado == "en espera" and cambioEstado==1)
+			if @cont.cantidad[0] > 50
+				@cont = new Contenedor(['Cerveza Filtrada'],[@cont.cantidad[0]-50])
+			else
+				if(cantidadPA>=100)
+					@estado="llena"
+				else
+					@estado = "inactiva"
+				end
+				val = (cantidadPA<100?cantidadPA:100)
+
+				@cont = new Contenedor(['Cerveza Filtrada'],[val])
+			end
+		else if(@estado=="llena")
+			@estado="en espera"
+		else if(@estado=="inactiva" and @cont.cantidad[0]+cantidadPA>=100)
+			@estado="llena"
+			@cont = new Contenedor(@cont.nombreContenido,[100])
+			val = (cantidadPA<100?0:cantidadPA-100)
 		end
+		return val
+
 	end
 end
 
@@ -128,13 +142,14 @@ module Molino
 	# * +cantidadPA+ - La cantidad del producto de la maquina anterior.
 	# Se obtiene del main, y debe ser una variable del Main que se va modificando
 	#
+	@cont = Contenedor.new(['Molino'],[0])
 	def ciclomolino(cantidadPA)
 		# la maquina molino tiene un ciclo, por lo que se tiene que modificar el
 		# status a llena una vez llegue a su cantidad Maxima de insumos.
 	  
 		ciclo = CicloDeTrabajo.new
 		desecho = ((@cantidadMaxima * 2) / 100)  #2%
-		
+
 		if cantidadPA >= @cantidadMaxima
 			cantidadPA = cantidadPA - @cantidadMaxima
 			@estado = "Llena"
@@ -371,4 +386,9 @@ module PailaDeMezcla
 			return new Contenedor('Paila de Mezcla', cantidadProducto)
 		end	
 	end
+end
+
+
+module TCC
+
 end
