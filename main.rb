@@ -52,9 +52,9 @@ else
 	@lista = inicializar()
 	cerveza,ins1,ins2,ins3,ins4 = ciclar(@lista)
 
-	puts "Se produjo #{cerveza} litros de cerveza"
-	puts "Sobraron #{ins1} kilos de cevada"
-	puts "Sobraron #{ins2} kilos de mezcla arroz/maiz"
-	puts "Sobraron #{ins3} kilos de levadura"
-	puts "Sobraron #{ins4} kilos de lupulo"
+	puts "Cerveza total: #{cerveza}"
+	puts "Cebada sobrante: #{ins1}"
+	puts "Lupulo sobrante: #{ins4}"
+	puts "Levadura sobrante: #{ins3}"
+	puts "Mezcla Arroz Maiz sobrante: #{ins2}"
 end
